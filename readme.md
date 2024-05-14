@@ -1,8 +1,9 @@
 ## Example usage of the Final Fantasy 1 RNG
 
 ### Initialize the RNG object
- 
-`const rng = new FF1Rng();`
+``` 
+const rng = new FF1Rng();
+```
  
 ### Tick to get the next number
  ```
