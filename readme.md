@@ -1,7 +1,8 @@
 ## Example usage of the Final Fantasy 1 RNG
 In Final Fantasy 1, random numbers are generated using an incrementing index through a fixed table of 256 u8 numbers.
-This implementation allows you to experience that same pseudocryptographic joy! Without using `tsc`, simply import the 
-`FF1Rng` Class from `/dist/index.js`
+This implementation allows you to experience that same pseudocryptographic joy!
+
+Without using `tsc`, simply import the `FF1Rng` Class from `/dist/index.js`
 
 ### Initialize the RNG object with a seed of 0
 ``` 
