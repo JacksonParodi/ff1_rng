@@ -1,0 +1,17 @@
+{
+  "name": "ff1_rng",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A simple Final Fantasy 1 RNG reimplementation",
+  "main": "dist/index.js",
+  "scripts": {
+    "pretest": "tsc",
+    "test": "node dist/test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.4.5"
+  }
+}
