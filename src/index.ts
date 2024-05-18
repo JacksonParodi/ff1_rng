@@ -27,7 +27,7 @@ export default class FF1Rng {
      * @param seedInput - The seed to use for the random number generator. Negative values will wrap around the table. If not provided, the seed will be set to 0
      * @returns the seed after processing
      */
-    public setSeed(seedInput?: number | string | undefined): number {
+    public setSeed(seedInput?: number | string): number {
         const processedSeed = this.processSeedInput(seedInput);
         this.seed = processedSeed;
         return this.seed;
@@ -49,32 +49,33 @@ export default class FF1Rng {
      * @returns The processed seed, or 0 if the input is invalid
      */
     private processSeedInput(seedInput: number | string | undefined): number {
-        if (typeof seedInput === "number") {
+        switch (typeof seedInput) {
+            case "number":
+                // If the seed is negative, wrap around the table
+                if (seedInput < 0) {
+                    seedInput = this.table.length + (seedInput % this.table.length);
+                }
+                if (Number.isInteger(seedInput)) {
+                    return seedInput % this.table.length;
+                }
+                // if seed input is a float, simply round it down to nearest integer
+                return Math.floor(seedInput) % this.table.length;
 
-            // If the seed is negative, wrap around the table
-            if (seedInput < 0) {
-                seedInput = this.table.length + (seedInput % this.table.length);
-            }
+            case "string":
+                let parsedInput = parseInt(seedInput);
 
-            if (Number.isInteger(seedInput)) {
-                return seedInput % this.table.length;
-            }
-            return Math.round(seedInput) % this.table.length;
+                // if parsed string is negative, wrap around the table
+                if (parsedInput < 0) {
+                    parsedInput = this.table.length + (parsedInput % this.table.length);
+                }
+
+                // if parsed string is a valid integer, return it
+                if (!isNaN(parsedInput)) {
+                    return parseInt(seedInput) % this.table.length;
+                }
+            default:
+                // If the input is not a valid number or string, log an error and return 0
+                return 0;
         }
-
-        if (typeof seedInput === "string") {
-            if (!isNaN(parseInt(seedInput))) {
-                return parseInt(seedInput) % this.table.length;
-            }
-        }
-
-        // If the input is undefined, set it to 0
-        if (seedInput === undefined) {
-            return 0;
-        }
-
-        // If the input is not a valid number or string, log an error and return 0
-        console.log(`${seedInput} is not a valid seed input. returning 0`);
-        return 0;
     }
 }

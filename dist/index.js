@@ -48,27 +48,30 @@ export default class FF1Rng {
      * @returns The processed seed, or 0 if the input is invalid
      */
     processSeedInput(seedInput) {
-        if (typeof seedInput === "number") {
-            // If the seed is negative, wrap around the table
-            if (seedInput < 0) {
-                seedInput = this.table.length + (seedInput % this.table.length);
-            }
-            if (Number.isInteger(seedInput)) {
-                return seedInput % this.table.length;
-            }
-            return Math.round(seedInput) % this.table.length;
+        switch (typeof seedInput) {
+            case "number":
+                // If the seed is negative, wrap around the table
+                if (seedInput < 0) {
+                    seedInput = this.table.length + (seedInput % this.table.length);
+                }
+                if (Number.isInteger(seedInput)) {
+                    return seedInput % this.table.length;
+                }
+                // if seed input is a float, simply round it down to nearest integer
+                return Math.floor(seedInput) % this.table.length;
+            case "string":
+                let parsedInput = parseInt(seedInput);
+                // if parsed string is negative, wrap around the table
+                if (parsedInput < 0) {
+                    parsedInput = this.table.length + (parsedInput % this.table.length);
+                }
+                // if parsed string is a valid integer, return it
+                if (!isNaN(parsedInput)) {
+                    return parseInt(seedInput) % this.table.length;
+                }
+            default:
+                // If the input is not a valid number or string, log an error and return 0
+                return 0;
         }
-        if (typeof seedInput === "string") {
-            if (!isNaN(parseInt(seedInput))) {
-                return parseInt(seedInput) % this.table.length;
-            }
-        }
-        // If the input is undefined, set it to 0
-        if (seedInput === undefined) {
-            return 0;
-        }
-        // If the input is not a valid number or string, log an error and return 0
-        console.log(`${seedInput} is not a valid seed input. returning 0`);
-        return 0;
     }
 }
